@@ -18,20 +18,20 @@ public class Interactor : MonoBehaviour
         _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
         if (_numFound > 0 && _colliders[0].GetComponent<ItemInteract>())
         {
-            if (isPicked && _interactionPoint.transform.childCount > 0 && Input.GetKeyUp(KeyCode.E))
+            if (isPicked && _interactionPoint.transform.childCount > 0 && Input.GetButton("Interact"))
             {
                 DropDown();
             }
             else
             {
                 var interactable = _colliders[0].GetComponent<ItemInteract>();
-                if (interactable != null && Input.GetKeyUp(KeyCode.E))
+                if (interactable != null && Input.GetButton("Interact"))
                 {
                     PickUp(interactable.gameObject);
                 }
             }
         }
-        if (_numFound > 0 && _colliders[0].GetComponentInParent<NPCInteract>() && Input.GetKeyUp(KeyCode.E))
+        if (_numFound > 0 && _colliders[0].GetComponentInParent<NPCInteract>() && Input.GetButton("Interact"))
         {
             var interactable = _colliders[0].gameObject.GetComponentInParent<NPCInteract>();
             interactable.Dialog();
