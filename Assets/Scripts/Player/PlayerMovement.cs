@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,11 @@ public class PlayerMovement : MonoBehaviour
     public Animator _anim; // Получаем доступ к компоненту, отвечающему за анимацию
     public CharacterController _char; // Получаем доступ к компоненту, отвечающему за передвижение персонажа
     Transform PlayerTransform;
+
+    [Header("Звуки движеня")]
+    public AudioSource _StepSoundController;
+    public AudioClip GrassStep;
+    public AudioClip StoneStep;
 
     [Header("Векторы движения")]
     Vector3 direction; // Данный вектор будет отвечать за то, куда будет идти персонаж
@@ -57,6 +63,18 @@ public class PlayerMovement : MonoBehaviour
         GetRotate(); // Добавляем метод в LateUpdate. В этом методе события выполняются после Update. Для нас так тупо удобнее. Можно было и в Update закинуть
     }
 
+    private void OnTriggerEnter(Collider collision)
+    {
+        Debug.Log(collision.gameObject.layer);
+        _StepSoundController.clip = StoneStep;
+    }
+
+    private void OnTriggerExit(Collider collision)
+    {
+        Debug.Log(collision.gameObject.layer);
+        _StepSoundController.clip = GrassStep;
+    }
+
     private void GetInput() // Здесь будет все, что связанно с воодом данных с клавиатуры и мыши
     {
         float x = Input.GetAxis("Horizontal"); // Объявляем две переменные для передвижения по оси X. Используем оси для более гибкой настройки управления
@@ -66,16 +84,19 @@ public class PlayerMovement : MonoBehaviour
         if (_char.isGrounded) // Проверка на то, находится ли персонаж на земле
         {
             direction = new Vector3(x, 0f, z); // Вектору напрвления задаем значения, полученние с клавиатуры
-
             if (!Input.GetButton("Run"))
             {
-                _anim.SetFloat("Vertical", x);
+                _anim.SetFloat("Horizontal", Mathf.Abs(x));
+                
             }
-            _anim.SetFloat("Horizontal", z);// Задаем значение для переменной аниматора. Таким образом персонаж из стоячей анимации перейдет к шагу
+            _anim.SetFloat("Horizontal", Mathf.Abs(z));// Задаем значение для переменной аниматора. Таким образом персонаж из стоячей анимации перейдет к шагу
+            StepsSoundPlay(x, _char.isGrounded, z);
+
             direction = transform.TransformDirection(direction) * moveSpeed; // Задаем направление движению персонажа и умножаем его на скорость передвижения
             if (Input.GetButton("Jump")) // Проверяем, не нажималась ли кнопка прыжка
             {
                 direction.y = jumpSpeed; // Устремляем персонажа вверх по оси y
+                _StepSoundController.Stop();
             }
 
             if (Input.GetButton("Run") && z > 0)
@@ -89,7 +110,6 @@ public class PlayerMovement : MonoBehaviour
             }
 
         }
-
         direction.y -= gravity * Time.deltaTime; // Заставляет персонажа двигаться по земле и приземляться после прыжка. Поменять + на - для прикола никогда не помешает
         _char.Move(direction * Time.deltaTime); // Устремляем персонажа в координаты, заданные скоростью и вводом с калвиатуры. Время необходимо для более плавного действия.
     }
@@ -106,5 +126,18 @@ public class PlayerMovement : MonoBehaviour
         transform.localEulerAngles = PlayerRotate; // Присваиваем поворот объекту, на котором висит данный скрипт скрипт
 
         Chest.transform.localEulerAngles = ChestRotate; // Присваиваем поворот объекту, который мы добавили в Transform, в данном случае - на грудь
+    }
+
+    private void StepsSoundPlay(float x, bool flag, float z)
+    {
+        if (((Mathf.Abs(z) >= 0.35f) || (Mathf.Abs(x) >= 0.35f)) && flag)
+        {
+            if (_StepSoundController.isPlaying || !flag) return;
+            _StepSoundController.Play();
+        }
+        else
+        {
+            _StepSoundController.Stop();
+        }
     }
 }
