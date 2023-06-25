@@ -121,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
         PlayerRotate.y += MouseX; // Поворот персонажа по оси Y. Y т.к. именно вокруг нее происходит поворот вправо-влево без наклона
 
         ChestRotate.z -= MouseY; // Поворот персонажа по оси Z. Z т.к. Blender и Unity имеют разные направления осей.
-        ChestRotate.z = (Mathf.Clamp(ChestRotate.z, -80f, 30f)); // Ограничиваем вращение по оси, чтобы не делать 360
+        ChestRotate.z = (Mathf.Clamp(ChestRotate.z, -80f, 50f)); // Ограничиваем вращение по оси, чтобы не делать 360
 
         transform.localEulerAngles = PlayerRotate; // Присваиваем поворот объекту, на котором висит данный скрипт скрипт
 

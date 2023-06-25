@@ -26,22 +26,22 @@ public class Interactor : MonoBehaviour
         {
             DropDown();
         }
-        if (hit.collider != null)
+        if (hit.collider != null && Input.GetButton("Interact"))
         {
-            Debug.Log(hit.collider.gameObject && Input.GetButton("Interact"));
-            
-            if (hit.collider.GetComponent<ItemInteract>())
-            {
-                PickUp(hit.collider.gameObject.GetComponent<Transform>());
-            }
-            else if (hit.collider.GetComponentInParent<NPCInteract>())
-            {
-                hit.collider.GetComponentInParent<NPCInteract>().Dialog();
-            }
-            else
-            {
-                hit.collider.GetComponentInParent<IStaticItem>()?.Interact();
-            }
+
+                if (hit.collider.GetComponent<ItemInteract>())
+                {
+                    PickUp(hit.collider.gameObject.GetComponent<Transform>());
+                    hit.collider.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                }
+                else if (hit.collider.GetComponentInParent<NPCInteract>())
+                {
+                    hit.collider.GetComponentInParent<NPCInteract>().Dialog();
+                }
+                else
+                {
+                    hit.collider.GetComponentInParent<IStaticItem>()?.Interact();
+                }
         }
     }
     private void PickUp(Transform interactable)
@@ -52,7 +52,11 @@ public class Interactor : MonoBehaviour
     }
     private void DropDown()
     {
-        itemInHand.GetChild(0).SetParent(null);
+        Transform CurrentItem = itemInHand.GetChild(0);
+        CurrentItem.SetParent(null);
+        CurrentItem.GetComponent<Rigidbody>().isKinematic = false;
+        CurrentItem.GetComponent<Rigidbody>().AddForce(transform.forward*1000f);
+        
     }
     private void OnDrawGizmos()
     {
