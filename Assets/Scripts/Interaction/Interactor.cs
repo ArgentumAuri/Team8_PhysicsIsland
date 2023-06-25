@@ -1,59 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using Unity.Burst.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 
 public class Interactor : MonoBehaviour
 {
-    [SerializeField] public Transform _interactionPoint;
-    [SerializeField] public float _interactionPointRadius = 0.5f;
+
     [SerializeField] public LayerMask _interactableMask;
-    [SerializeField] public int _numFound;
-    private readonly Collider[] _colliders = new Collider[3];
-    private bool isPicked = false;
+    //raycast
+    [SerializeField] [Min(1)] private float hitRange = 10;
+    [SerializeField] public Transform playerCameraTransform;
+    private RaycastHit hit;
+    //interaction point
+    [SerializeField] public Transform itemInHand;
 
 
     private void Update()
     {
-        _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
-        if (_numFound > 0 && _colliders[0].GetComponent<ItemInteract>())
+        Debug.DrawRay(playerCameraTransform.position, playerCameraTransform.forward * hitRange, Color.red);
+        Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out hit, hitRange, _interactableMask);
+        if (itemInHand.transform.childCount > 0 && Input.GetButton("DropItem") && hit.collider == null)
         {
-            if (isPicked && _interactionPoint.transform.childCount > 0 && Input.GetButton("Interact"))
+            DropDown();
+        }
+        if (hit.collider != null)
+        {
+            Debug.Log(hit.collider.gameObject && Input.GetButton("Interact"));
+            
+            if (hit.collider.GetComponent<ItemInteract>())
             {
-                DropDown();
+                PickUp(hit.collider.gameObject.GetComponent<Transform>());
+            }
+            else if (hit.collider.GetComponentInParent<NPCInteract>())
+            {
+                hit.collider.GetComponentInParent<NPCInteract>().Dialog();
             }
             else
             {
-                var interactable = _colliders[0].GetComponent<ItemInteract>();
-                if (interactable != null && Input.GetButton("Interact"))
-                {
-                    PickUp(interactable.gameObject);
-                }
+                hit.collider.GetComponentInParent<IStaticItem>()?.Interact();
             }
         }
-        if (_numFound > 0 && _colliders[0].GetComponentInParent<NPCInteract>() && Input.GetButton("Interact"))
-        {
-            var interactable = _colliders[0].gameObject.GetComponentInParent<NPCInteract>();
-            interactable.Dialog();
-        }
-        //UnityEngine.Debug.Log(_colliders[0].gameObject.GetComponentInParent<NPCInteract>());
     }
-    private void PickUp(GameObject interactable)
+    private void PickUp(Transform interactable)
     {
-        UnityEngine.Debug.Log(interactable.gameObject);
-        interactable.transform.position = Vector3.zero;
-        interactable.transform.rotation = Quaternion.identity;
-        interactable.transform.SetParent(_interactionPoint, false);
-        isPicked = true;
+        interactable.SetParent(itemInHand, false);
+        interactable.localPosition = Vector3.zero;
+        interactable.localRotation = Quaternion.identity;
     }
     private void DropDown()
     {
-        _interactionPoint.GetChild(0).SetParent(null);
-        isPicked = false;
+        itemInHand.GetChild(0).SetParent(null);
     }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(_interactionPoint.position, _interactionPointRadius);
+        Gizmos.DrawWireSphere(itemInHand.position, 0.5f);
     }
 }
