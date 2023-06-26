@@ -22,7 +22,6 @@ public class FallingBoxScript : MonoBehaviour
     {
         gForceVector = new Vector3(0f, gForce, 0f);
         Vector3 newVelocity = rb.velocity + gForceVector * rb.mass * Time.deltaTime;
-        Debug.Log(rb.velocity);
         rb.velocity = newVelocity;
     }
 }

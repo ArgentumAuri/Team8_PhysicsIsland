@@ -28,10 +28,8 @@ public class Interactor : MonoBehaviour
         }
         if (hit.collider != null)
         {
-            Debug.Log(hit.collider.name);
             if (Input.GetButton("Interact"))
             {
-                Debug.Log(hit.collider.gameObject.name);
                 if (hit.collider.GetComponent<ItemInteract>())
                 {
                     PickUp(hit.collider.gameObject.GetComponent<Transform>());
@@ -44,7 +42,6 @@ public class Interactor : MonoBehaviour
                 else
                 {
                     hit.collider.GetComponentInParent<IStaticItem>()?.Interact();
-                    Debug.Log("Олляля");
                 }
             }
         }

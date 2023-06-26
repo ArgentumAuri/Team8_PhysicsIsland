@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class ButtonDown : MonoBehaviour, IStaticItem
 {
+    public bool Activated = false;
+    public bool UseBlock = false;
     public Animator _anim;
+
     void Start()
     {
         _anim = gameObject.GetComponent<Animator>();  
@@ -12,7 +15,12 @@ public class ButtonDown : MonoBehaviour, IStaticItem
 
     public bool Interact()
     {
-        _anim.Play("interaction");
+        if (!UseBlock)
+        {
+            _anim.Play("interaction");
+            Activated = !Activated;
+            GetComponentInParent<GravityLogic>().StartRestart();
+        }
         return true;
     }
 

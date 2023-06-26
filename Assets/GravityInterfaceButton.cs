@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,7 +9,10 @@ public class GravityInterfaceButton : MonoBehaviour, IStaticItem
 {
     public Material[] ButtonStates;
     public int ButtonState = 0;
-    bool activated = false;
+    public TextMeshPro GForceValue;
+    private int GForceInt;
+    public int ButtonValue;
+    public bool activated = false;
     void Start()
     {
         
@@ -24,11 +28,15 @@ public class GravityInterfaceButton : MonoBehaviour, IStaticItem
 
     public bool Interact()
     {
-
+        if (!activated)
+        {
             GetComponent<Animator>().Play("PlusButtonAnimPlay");
-            Debug.Log("Ezz");
-            return true;
-        
+            GForceInt = int.Parse(GForceValue.text) + ButtonValue;
+            if (GForceInt > 99) GForceInt = 99;
+            if (GForceInt < 0) GForceInt = 0;
+            GForceValue.text = (GForceInt).ToString();
+        }
+        return true;
     }
 
     
