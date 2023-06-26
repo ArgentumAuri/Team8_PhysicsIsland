@@ -13,7 +13,9 @@ public class GravityLogic : MonoBehaviour
     public GameObject PrizeFuse;
     public MeshCollider HoleForCrate;
     public Transform CrateSpawnPoint;
+    public Transform FuseSpawnPoint;
     public Transform ActualCrate;
+    private bool GOTOVO = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,9 +49,20 @@ public class GravityLogic : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         
-        if (int.Parse(GForcePanel.text) > 37 && int.Parse(GForcePanel.text) < 43 && other.name == "BoxToBreak Variant(Clone)")
+        if (int.Parse(GForcePanel.text) > 37 && int.Parse(GForcePanel.text) < 43 && other.name == "BoxToBreak Variant(Clone)" && !GOTOVO)
         {
-            Debug.Log("Сработало!");
+            Destroy(ActualCrate.gameObject);
+            Instantiate(PrizeFuse,FuseSpawnPoint);
+            PrizeFuse.GetComponent<Rigidbody>().isKinematic = false;
+            PrizeFuse.transform.localPosition = Vector3.zero;
+            PrizeFuse.transform.SetParent(null);
+            GOTOVO = true;
+            
+        }
+
+        else if (int.Parse(GForcePanel.text) >= 43)
+        {
+            Destroy(ActualCrate.gameObject);
         }
     }
 }

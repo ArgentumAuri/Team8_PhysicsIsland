@@ -7,6 +7,7 @@ public class ButtonDown : MonoBehaviour, IStaticItem
     public bool Activated = false;
     public bool UseBlock = false;
     public Animator _anim;
+    public Animator _ColbeAnim;
 
     void Start()
     {
@@ -20,6 +21,11 @@ public class ButtonDown : MonoBehaviour, IStaticItem
             _anim.Play("interaction");
             Activated = !Activated;
             GetComponentInParent<GravityLogic>().StartRestart();
+            if (Activated)
+            {
+                _ColbeAnim.Play("GlassCylynderUp");
+            }
+            else _ColbeAnim.Play("GlassCylynderDown");
         }
         return true;
     }
