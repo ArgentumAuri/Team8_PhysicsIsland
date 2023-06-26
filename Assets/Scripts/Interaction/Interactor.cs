@@ -16,11 +16,11 @@ public class Interactor : MonoBehaviour
     private RaycastHit hit;
     //interaction point
     [SerializeField] public Transform itemInHand;
-
-
+    public AudioClip[] clips;
+    
     private void Update()
     {
-        Debug.DrawRay(playerCameraTransform.position, playerCameraTransform.forward * hitRange, Color.red);
+        //Debug.DrawRay(playerCameraTransform.position, playerCameraTransform.forward * hitRange, Color.red);
         Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out hit, hitRange, _interactableMask);
         if (itemInHand.transform.childCount > 0 && Input.GetButton("DropItem") && hit.collider == null)
         {
@@ -51,12 +51,16 @@ public class Interactor : MonoBehaviour
     }
     private void PickUp(Transform interactable)
     {
+        itemInHand.GetComponent<AudioSource>().clip = clips[0];
+        itemInHand.GetComponent<AudioSource>().Play();
         interactable.SetParent(itemInHand, false);
         interactable.localPosition = Vector3.zero;
         interactable.localRotation = Quaternion.identity;
     }
     private void DropDown()
     {
+        itemInHand.GetComponent<AudioSource>().clip = clips[1];
+        itemInHand.GetComponent<AudioSource>().Play();
         Transform CurrentItem = itemInHand.GetChild(0);
         CurrentItem.SetParent(null);
         CurrentItem.GetComponent<Rigidbody>().isKinematic = false;
