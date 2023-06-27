@@ -17,10 +17,10 @@ public class Interactor : MonoBehaviour
     //interaction point
     [SerializeField] public Transform itemInHand;
     public AudioClip[] clips;
+    public GameObject dialogBox;
     
     private void Update()
     {
-        //Debug.DrawRay(playerCameraTransform.position, playerCameraTransform.forward * hitRange, Color.red);
         Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out hit, hitRange, _interactableMask);
         if (itemInHand.transform.childCount > 0 && Input.GetButton("DropItem") && hit.collider == null)
         {
@@ -28,7 +28,7 @@ public class Interactor : MonoBehaviour
         }
         if (hit.collider != null)
         {
-            if (Input.GetButton("Interact"))
+            if (Input.GetButtonDown("Interact"))
             {
                 if (hit.collider.GetComponent<ItemInteract>())
                 {
@@ -44,6 +44,10 @@ public class Interactor : MonoBehaviour
                     hit.collider.GetComponentInParent<IStaticItem>()?.Interact();
                 }
             }
+        }
+        if (hit.collider == null && Input.anyKey)
+        {
+            dialogBox.SetActive(false);
         }
     }
     private void PickUp(Transform interactable)

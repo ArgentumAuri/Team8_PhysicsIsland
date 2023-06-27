@@ -8,17 +8,19 @@ public class SoundSettings : MonoBehaviour
 {
     float min = -80; float max = 0;
     public AudioMixer audioMixer;
-    public Text TVtxt, PVtxt, EVtxt; 
-    public Slider TVslider,PVslider,EVslider;
+    public Text TVtxt, PVtxt, EVtxt,MVtxt; 
+    public Slider TVslider,PVslider,EVslider,MVslider;
 
     private void Start()
     {
         TVslider.value = PlayerPrefs.GetFloat("TotalVolume");
         PVslider.value = PlayerPrefs.GetFloat("PlayerVolume");
         EVslider.value = PlayerPrefs.GetFloat("EnviromentVolume");
+        MVslider.value = PlayerPrefs.GetFloat("MusicVolume");
         TVtxt.text = ((int)toRange(min, max, TVslider.value, 0, 100)).ToString() + "%";
         PVtxt.text = ((int)toRange(min, max, PVslider.value, 0, 100)).ToString() + "%";
         EVtxt.text = ((int)toRange(min, max, EVslider.value, 0, 100)).ToString() + "%";
+        MVtxt.text = ((int)toRange(min, max, EVslider.value, 0, 100)).ToString() + "%";
     }
     public void SetTotalVolume(float volume)
     {
@@ -42,6 +44,14 @@ public class SoundSettings : MonoBehaviour
         EVtxt.text = ((int)value).ToString() + "%";
         audioMixer.SetFloat("EnviromentVolume", volume);
         PlayerPrefs.SetFloat("EnviromentVolume", volume);
+        PlayerPrefs.Save();
+    }
+    public void SetMusicVolume(float volume)
+    {
+        float value = toRange(min, max, MVslider.value, 0, 100);
+        MVtxt.text = ((int)value).ToString() + "%";
+        audioMixer.SetFloat("MusicVolume", volume);
+        PlayerPrefs.SetFloat("MusicVolume", volume);
         PlayerPrefs.Save();
     }
     private float toRange(float a, float b, float x, float A, float B) 

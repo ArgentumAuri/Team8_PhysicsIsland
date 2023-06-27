@@ -1,54 +1,108 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NPCInteract : MonoBehaviour
 {
-    bool isMet = false;
-    bool isFailed = false;
-    public AudioClip[] clips;
-    private AudioSource audioSource;
-    public string GreetingPhrase;
-    public string DisapointmentPhrase;
-    public string[] RegularPhrases;
-    public int repeatFrom = 2;
-    private int currentPhrase = 0;
+    bool isFailed  = false;
+    bool isSuccess = false;
+    int currentStage  = 1;
+    int currentPhrase = 0;
+    int startRepeatIndex;
+    int endRepeatIndex;
+    int startStagePhrase;
+    int successPhraseIndex;
+    public AudioClip[] Clips;
+    public string[] Phrases;
+    public AudioSource audioSource;
+    public GameObject dialogBox;
+    Text text;
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        text = dialogBox.GetComponentInChildren<Text>();
     }
     public void Dialog()
     {
-        if (!isMet)
+        CurrentStage();
+        dialogBox.SetActive(true);
+        if(!isFailed && !isSuccess)
         {
-            isMet = true;
-            PlayClip(0);
-            //show dialog
-            //text = GreetingPhrase
-            return;
-        }
-        else if (isMet && !isFailed)
-        {
-            PlayClip(1);
-            //show dialog
-            //if (currentPhrase<RegularPhrases.length)
-            // text = RegularPhrases[currentPhrase]
-            //else 
-            // {
-            // currentPhrase = repeatFrom;
-            // text = RegularPhrases[currentPhrase]
-            // }
+            if (currentPhrase >= endRepeatIndex)
+            {
+                currentPhrase = startRepeatIndex;
+            }
+            ShowMessage(currentPhrase);
         }
         else if (isFailed)
         {
-            PlayClip(2);
-            //show dialog
-            // text = DisapointmentPhrase
+
+        }
+        else if (isSuccess)
+        {
+            ShowMessage(successPhraseIndex);
+            currentStage++;
+            return;
+        }
+        currentPhrase++;
+    }
+    void ShowMessage(int index)
+    {
+        text.text = Phrases[index];
+        if (Clips[index] != null)
+        {
+            audioSource.clip = Clips[index];
+            audioSource.Play();
         }
     }
-    void PlayClip(int i)
+    void CurrentStage()
     {
-        audioSource.clip = clips[i];
-        audioSource.Play();
-    }    
+        switch (currentStage) 
+        {
+            case 1:
+                {
+                    startStagePhrase = 0;
+                    startRepeatIndex = 8;
+                    endRepeatIndex = 10;
+                }break;
+            case 2: 
+                {
+                    startStagePhrase = 10;
+                    startRepeatIndex = 10;
+                    endRepeatIndex = 10;
+                }
+                break;
+            case 3:
+                {
+                    startStagePhrase = 0;
+                    startRepeatIndex = 0;
+                    endRepeatIndex = 0;
+                }
+                break;
+            case 4:
+                {
+                    startStagePhrase = 0;
+                    startRepeatIndex = 0;
+                    endRepeatIndex = 0;
+                }
+                break;
+            case 5:
+                {
+                    startStagePhrase = 0;
+                    startRepeatIndex = 0;
+                    endRepeatIndex = 0;
+                }
+                break;
+            case 6:
+                {
+                    startStagePhrase = Phrases.Length-1;
+                    startRepeatIndex = Phrases.Length - 1;
+                    endRepeatIndex = Phrases.Length - 1;
+                }
+                break;
+        }
+        if (currentPhrase < startStagePhrase)
+            currentPhrase = startStagePhrase;
+    }
 }
