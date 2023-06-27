@@ -28,7 +28,6 @@ public class Interactor : MonoBehaviour
         }
         if (hit.collider != null)
         {
-            Debug.Log(hit.collider.GetComponentInParent<IStaticItem>() != null);
             if (Input.GetButtonDown("Interact"))
             {
                 if (hit.collider.GetComponent<ItemInteract>())

@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
     public float MouseY;
     private float mouseSensetivity = 300f;
     //public float currentSense = 300f;
-
+    public float SensetivityMultiplier = 1;
 
 
     [Header("Ладонь правой руки. Место для спавна оружия")]
@@ -79,8 +79,8 @@ public class PlayerMovement : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal"); // Объявляем две переменные для передвижения по оси X. Используем оси для более гибкой настройки управления
         float z = Input.GetAxis("Vertical");// Объявляем две переменные для передвижения по оси Z. Используем оси для более гибкой настройки управления
-        MouseX = Mathf.Clamp(Input.GetAxis("Mouse X") * mouseSensetivity * Time.deltaTime, -80f, 80f); // Задаем значение для оси Х мыши.
-        MouseY = Mathf.Clamp(Input.GetAxis("Mouse Y") * mouseSensetivity * Time.deltaTime, -80f, 80f); // Задаем значение для оси Y мыши.
+        MouseX = Mathf.Clamp(Input.GetAxis("Mouse X") * (mouseSensetivity*SensetivityMultiplier) * Time.deltaTime, -80f, 80f); // Задаем значение для оси Х мыши.
+        MouseY = Mathf.Clamp(Input.GetAxis("Mouse Y") * (mouseSensetivity * SensetivityMultiplier) * Time.deltaTime, -80f, 80f); // Задаем значение для оси Y мыши.
         if (_char.isGrounded) // Проверка на то, находится ли персонаж на земле
         {
             direction = new Vector3(x, 0f, z); // Вектору напрвления задаем значения, полученние с клавиатуры
