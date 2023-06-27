@@ -30,20 +30,23 @@ public class GravityLogic : MonoBehaviour
 
     public void StartRestart()
     {
-        if (!ActivateButton.Activated)
-        {
-            HoleForCrate.enabled = true;
-            if (ActualCrate != null) Destroy(ActualCrate.gameObject);
-            ActualCrate = Instantiate(CrateToSpawn, CrateSpawnPoint).transform;
-            ActualCrate.localPosition = Vector3.zero;
-            ActualCrate.localEulerAngles = CrateSpawnPoint.localEulerAngles;
 
-        }
-        else
-        {
-            ActualCrate.GetComponent<FallingBoxScript>().gForce = GForceValue;
-            HoleForCrate.enabled = false;
-        }
+            if (!ActivateButton.Activated)
+            {
+                HoleForCrate.enabled = true;
+                if (ActualCrate != null) Destroy(ActualCrate.gameObject);
+                ActualCrate = Instantiate(CrateToSpawn, CrateSpawnPoint).transform;
+                ActualCrate.localPosition = Vector3.zero;
+                ActualCrate.localEulerAngles = CrateSpawnPoint.localEulerAngles;
+
+            }
+            else
+            {
+                ActualCrate.GetComponent<FallingBoxScript>().gForce = GForceValue;
+                HoleForCrate.enabled = false;
+            }
+
+        
     }
 
     private void OnTriggerEnter(Collider other)

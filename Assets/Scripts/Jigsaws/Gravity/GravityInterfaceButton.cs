@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class GravityInterfaceButton : MonoBehaviour, IStaticItem
     }
 
 
-    public bool Interact()
+    public async Task Interact()
     {
         if (!activated)
         {
@@ -36,7 +37,6 @@ public class GravityInterfaceButton : MonoBehaviour, IStaticItem
             if (GForceInt < 0) GForceInt = 0;
             GForceValue.text = (GForceInt).ToString();
         }
-        return true;
     }
 
     
