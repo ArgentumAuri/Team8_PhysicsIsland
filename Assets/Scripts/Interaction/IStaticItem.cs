@@ -15,4 +15,9 @@ public interface IStaticItem
 
     }
 
+    public async Task Interact(Transform ItemInHand)
+    {
+
+    }
+
 }

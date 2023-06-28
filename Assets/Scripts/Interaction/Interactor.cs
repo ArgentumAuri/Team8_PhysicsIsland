@@ -49,10 +49,11 @@ public class Interactor : MonoBehaviour
                     MoveMirror(hit.collider.gameObject.transform);
                     hit.collider.gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 }
-                else
+                else if (itemInHand.childCount > 0)
                 {
-                    hit.collider.GetComponentInParent<IStaticItem>()?.Interact();
+                    hit.collider.GetComponentInParent<IStaticItem>()?.Interact(itemInHand.GetChild(0).transform);
                 }
+                else hit.collider.GetComponentInParent<IStaticItem>()?.Interact();
             }
         }
         if (hit.collider == null && Input.anyKey)
@@ -62,6 +63,7 @@ public class Interactor : MonoBehaviour
     }
     private void PickUp(Transform interactable)
     {
+        itemInHand.GetComponentInParent<Animator>().SetBool("ItemCarry", true);
         itemInHand.GetComponent<AudioSource>().clip = clips[0];
         itemInHand.GetComponent<AudioSource>().Play();
         interactable.SetParent(itemInHand, false);
@@ -82,6 +84,7 @@ public class Interactor : MonoBehaviour
     }
     private void DropDown()
     {
+        itemInHand.GetComponentInParent<Animator>().SetBool("ItemCarry", false);
         itemInHand.GetComponent<AudioSource>().clip = clips[1];
         itemInHand.GetComponent<AudioSource>().Play();
         Transform CurrentItem = itemInHand.GetChild(0);

@@ -14,6 +14,9 @@ public class LaserLogic : MonoBehaviour
     public int nReflections = 0;
     private int nPoints;
     private Vector3 inDirection;
+    int itemsInGrid = 0;
+    public bool ezz = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -107,6 +110,7 @@ public class LaserLogic : MonoBehaviour
 
                         //Print the name of the object the cast ray has hit, at the console  
                         Debug.Log("Object name: " + hit.transform.name);
+                        if (hit.transform.name == "OpenExit") ezz = true;
                     
                         //add a new vertex to the line renderer  
                         lineRenderer.SetVertexCount(++nPoints);
