@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class Interactor : MonoBehaviour
     //raycast
     [SerializeField] [Min(1)] private float hitRange = 10;
     [SerializeField] public Transform playerCameraTransform;
+    public Transform mirrorPlaceholder;
     private RaycastHit hit;
     //interaction point
     [SerializeField] public Transform itemInHand;
@@ -22,15 +24,18 @@ public class Interactor : MonoBehaviour
     private void Update()
     {
         Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out hit, hitRange, _interactableMask);
-        if (itemInHand.transform.childCount > 0 && Input.GetButton("DropItem") && hit.collider == null)
+        if ((itemInHand.transform.childCount > 0 && Input.GetButton("DropItem")))
         {
             DropDown();
         }
+
+        if (mirrorPlaceholder.transform.childCount > 0 && Input.GetButton("DropItem")) DropMirror();
+
         if (hit.collider != null)
         {
             if (Input.GetButtonDown("Interact"))
             {
-                if (hit.collider.GetComponent<ItemInteract>())
+                if (hit.collider.GetComponent<ItemInteract>() && (itemInHand.transform.childCount == 0))
                 {
                     PickUp(hit.collider.gameObject.GetComponent<Transform>());
                     hit.collider.gameObject.GetComponent<Rigidbody>().isKinematic = true;
@@ -38,6 +43,11 @@ public class Interactor : MonoBehaviour
                 else if (hit.collider.GetComponentInParent<NPCInteract>())
                 {
                     hit.collider.GetComponentInParent<NPCInteract>().Dialog();
+                }
+                else if (hit.collider.GetComponent<MirrorInteract>())
+                {
+                    MoveMirror(hit.collider.gameObject.transform);
+                    hit.collider.gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 }
                 else
                 {
@@ -58,6 +68,18 @@ public class Interactor : MonoBehaviour
         interactable.localPosition = Vector3.zero;
         interactable.localRotation = Quaternion.identity;
     }
+
+    private void MoveMirror(Transform interactable)
+    {
+        itemInHand.GetComponent<AudioSource>().clip = clips[0];
+        itemInHand.GetComponent<AudioSource>().Play();
+        interactable.SetParent(mirrorPlaceholder, false);
+        interactable.localPosition = Vector3.zero;
+        interactable.localRotation = Quaternion.identity;
+        interactable.transform.Rotate(0, -90, 0);
+        interactable.localScale = Vector3.one;
+        
+    }
     private void DropDown()
     {
         itemInHand.GetComponent<AudioSource>().clip = clips[1];
@@ -67,6 +89,18 @@ public class Interactor : MonoBehaviour
         CurrentItem.GetComponent<Rigidbody>().isKinematic = false;
         CurrentItem.GetComponent<Rigidbody>().AddForce(transform.forward*1000f);
         
+    }
+
+    private void DropMirror()
+    {
+        itemInHand.GetComponent<AudioSource>().clip = clips[1];
+        itemInHand.GetComponent<AudioSource>().Play();
+        Transform CurrentItem = mirrorPlaceholder.GetChild(0);
+        CurrentItem.SetParent(null);
+        CurrentItem.GetComponent<Rigidbody>().isKinematic = false;
+        CurrentItem.transform.localScale = new Vector3(200f, 200f, 200f);
+        CurrentItem.GetComponent<Rigidbody>().AddForce(transform.forward * 1000f);
+
     }
     private void OnDrawGizmos()
     {

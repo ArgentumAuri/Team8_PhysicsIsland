@@ -11,7 +11,7 @@ public class LaserLogic : MonoBehaviour
     public LayerMask layerMask;
     public Transform LaserSpawn;
     private LineRenderer lineRenderer;
-    public int nReflections = 2;
+    public int nReflections = 0;
     private int nPoints;
     private Vector3 inDirection;
     // Start is called before the first frame update
@@ -29,7 +29,7 @@ public class LaserLogic : MonoBehaviour
     private void StartLaser()
     {
         ray = new Ray(LaserSpawn.position, LaserSpawn.forward);
-        Physics.Raycast(LaserSpawn.position, LaserSpawn.forward, out hit, 1000f, layerMask);
+        Physics.Raycast(LaserSpawn.position, LaserSpawn.forward, out hit, 1000f);
 
         if (hit.collider != null)
         {
@@ -67,14 +67,16 @@ public class LaserLogic : MonoBehaviour
                 //Check if the ray has hit something  
                 if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))//cast the ray 100 units at the specified direction  
                 {
-                    
-                    inDirection = Vector3.Reflect(ray.direction, hit.normal);
+                    if (hit.collider.transform.gameObject.layer == 6)
+                    {
+                        inDirection = Vector3.Reflect(ray.direction, hit.normal);
+                    }
                      
                     ray = new Ray(hit.point, inDirection);
 
 
                     //Print the name of the object the cast ray has hit, at the console  
-                    Debug.Log("Object name: " + hit.transform.name);
+                    Debug.Log("Object name: " + hit.transform.gameObject.layer);
 
                     //if the number of reflections is set to 1  
                     if (nReflections == 1)
@@ -92,23 +94,26 @@ public class LaserLogic : MonoBehaviour
                 //Check if the ray has hit something  
                 if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))//cast the ray 100 units at the specified direction  
                 {
-                    //the refletion direction is the reflection of the ray's direction at the hit normal  
-                    inDirection = Vector3.Reflect(inDirection, hit.normal);
-                    //cast the reflected ray, using the hit point as the origin and the reflected direction as the direction  
-                    ray = new Ray(hit.point, inDirection);
+                    
+                        //the refletion direction is the reflection of the ray's direction at the hit normal  
+                        inDirection = Vector3.Reflect(inDirection, hit.normal);
+                        //cast the reflected ray, using the hit point as the origin and the reflected direction as the direction  
+                        ray = new Ray(hit.point, inDirection);
 
-                    //Draw the normal - can only be seen at the Scene tab, for debugging purposes  
-                    Debug.DrawRay(hit.point, hit.normal * 3, Color.blue);
-                    //represent the ray using a line that can only be viewed at the scene tab  
-                    Debug.DrawRay(hit.point, inDirection * 100, Color.magenta);
+                        //Draw the normal - can only be seen at the Scene tab, for debugging purposes  
+                        Debug.DrawRay(hit.point, hit.normal * 3, Color.blue);
+                        //represent the ray using a line that can only be viewed at the scene tab  
+                        Debug.DrawRay(hit.point, inDirection * 100, Color.magenta);
 
-                    //Print the name of the object the cast ray has hit, at the console  
-                    Debug.Log("Object name: " + hit.transform.name);
-
-                    //add a new vertex to the line renderer  
-                    lineRenderer.SetVertexCount(++nPoints);
-                    //set the position of the next vertex at the line renderer to be the same as the hit point  
-                    lineRenderer.SetPosition(i + 1, hit.point);
+                        //Print the name of the object the cast ray has hit, at the console  
+                        Debug.Log("Object name: " + hit.transform.name);
+                    
+                        //add a new vertex to the line renderer  
+                        lineRenderer.SetVertexCount(++nPoints);
+                        //set the position of the next vertex at the line renderer to be the same as the hit point  
+                        lineRenderer.SetPosition(i + 1, hit.point);
+                    
+                    
                 }
             }
         }
