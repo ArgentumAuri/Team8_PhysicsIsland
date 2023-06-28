@@ -49,7 +49,8 @@ public class NPCInteract : MonoBehaviour
     }
     void ShowMessage(int index)
     {
-        text.text = Phrases[index];
+        gameObject.GetComponent<UIWriter>().typeText(text,Phrases[index]);
+        Debug.Log(text.gameObject);
         if (Clips[index] != null)
         {
             audioSource.clip = Clips[index];
