@@ -9,6 +9,7 @@ public class ChestButtonDown : MonoBehaviour, IStaticItem
 {
     public bool IsAnimating;
     public Animator ChestAnimator;
+    public GameObject npc;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +32,12 @@ public class ChestButtonDown : MonoBehaviour, IStaticItem
             {
                 await Task.Yield();
             }
-            if (gameObject.name == "MoonButton") ChestAnimator.Play("Chest Open");
+            if (gameObject.name == "MoonButton" && npc.GetComponent<NPCInteract>().currentStage==2) 
+            { 
+                gameObject.GetComponent<AudioSource>().Play();
+                ChestAnimator.Play("Chest Open");
+                npc.GetComponent<NPCInteract>().isSuccess = true;
+            }
         }
     }
 }

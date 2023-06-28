@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class NPCInteract : MonoBehaviour
 {
-    bool isFailed  = false;
-    bool isSuccess = false;
-    int currentStage  = 1;
+    public bool isFailed  = false;
+    public bool isSuccess = false;
+    public int currentStage  = 1;
     int currentPhrase = 0;
     int startRepeatIndex;
     int endRepeatIndex;
@@ -18,6 +18,7 @@ public class NPCInteract : MonoBehaviour
     public string[] Phrases;
     public AudioSource audioSource;
     public GameObject dialogBox;
+    public GameObject itemToSpawn;
     Text text;
     private void Start()
     {
@@ -37,11 +38,15 @@ public class NPCInteract : MonoBehaviour
         }
         else if (isFailed)
         {
-
+            ShowMessage(0); //заменить при надобности
         }
         else if (isSuccess)
         {
             ShowMessage(successPhraseIndex);
+            if (currentStage == 2)
+            {
+                Instantiate(itemToSpawn, gameObject.transform.position, gameObject.transform.rotation);
+            }
             currentStage++;
             isSuccess = false;
             return;
