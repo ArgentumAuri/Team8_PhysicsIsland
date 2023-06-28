@@ -16,6 +16,7 @@ public class GravityLogic : MonoBehaviour
     public Transform FuseSpawnPoint;
     public Transform ActualCrate;
     private bool GOTOVO = false;
+    public GameObject npc;
     // Start is called before the first frame update
     void Start()
     {
@@ -60,7 +61,7 @@ public class GravityLogic : MonoBehaviour
             PrizeFuse.transform.localPosition = Vector3.zero;
             PrizeFuse.transform.SetParent(null);
             GOTOVO = true;
-            
+            npc.GetComponent<NPCInteract>().isSuccess = true;
         }
 
         else if (int.Parse(GForcePanel.text) >= 43)
