@@ -43,7 +43,6 @@ public class NPCInteract : MonoBehaviour
         {
             ShowMessage(successPhraseIndex);
             currentStage++;
-            isSuccess = false;
             return;
         }
         currentPhrase++;
@@ -64,25 +63,22 @@ public class NPCInteract : MonoBehaviour
         {
             case 1:
                 {
-                    successPhraseIndex = 11;
                     startStagePhrase = 0;
                     startRepeatIndex = 8;
                     endRepeatIndex = 10;
                 }break;
             case 2: 
                 {
-                    successPhraseIndex = 16;
-                    startStagePhrase = 12;
-                    startRepeatIndex = 13;
-                    endRepeatIndex = 15;
+                    startStagePhrase = 10;
+                    startRepeatIndex = 10;
+                    endRepeatIndex = 10;
                 }
                 break;
             case 3:
                 {
-                    successPhraseIndex = 21;
-                    startStagePhrase = 17;
-                    startRepeatIndex = 18;
-                    endRepeatIndex = 20;
+                    startStagePhrase = 0;
+                    startRepeatIndex = 0;
+                    endRepeatIndex = 0;
                 }
                 break;
             case 4:
