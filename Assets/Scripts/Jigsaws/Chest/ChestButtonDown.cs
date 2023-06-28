@@ -1,4 +1,3 @@
-using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,10 +32,11 @@ public class ChestButtonDown : MonoBehaviour, IStaticItem
                 await Task.Yield();
             }
             if (gameObject.name == "MoonButton" && npc.GetComponent<NPCInteract>().currentStage==2) 
-            { 
-                gameObject.GetComponent<AudioSource>().Play();
+            {
                 ChestAnimator.Play("Chest Open");
                 npc.GetComponent<NPCInteract>().isSuccess = true;
+                gameObject.GetComponent<AudioSource>().Play();
+                
             }
         }
     }

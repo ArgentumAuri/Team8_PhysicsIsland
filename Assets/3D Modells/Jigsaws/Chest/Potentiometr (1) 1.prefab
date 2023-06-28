@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 1667123054519749080}
   - component: {fileID: 2380348826016738103}
   - component: {fileID: 160735362718540701}
+  - component: {fileID: -8637122808124517791}
   m_Layer: 6
   m_Name: Potentiometr (1) 1
   m_TagString: QuestItem
@@ -151,6 +152,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.4846344, y: 0.9212189, z: 1}
   m_Center: {x: -0.2423172, y: 0.42952728, z: 0}
+--- !u!54 &-8637122808124517791
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837611334881413779}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4556793896594072061
 GameObject:
   m_ObjectHideFlags: 0

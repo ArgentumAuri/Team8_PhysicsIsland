@@ -59,7 +59,7 @@ public class GravityLogic : MonoBehaviour
             Instantiate(PrizeFuse,FuseSpawnPoint);
             PrizeFuse.GetComponent<Rigidbody>().isKinematic = false;
             PrizeFuse.transform.localPosition = Vector3.zero;
-            PrizeFuse.transform.SetParent(null);
+            //PrizeFuse.transform?.SetParent(null);
             GOTOVO = true;
             npc.GetComponent<NPCInteract>().isSuccess = true;
         }
