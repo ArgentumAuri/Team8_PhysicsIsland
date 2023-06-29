@@ -130,6 +130,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void StepsSoundPlay(float x, bool flag, float z)
     {
+        _StepSoundController.pitch = (float)(new System.Random().NextDouble()*(1.5-1)+1);
         if (((Mathf.Abs(z) >= 0.35f) || (Mathf.Abs(x) >= 0.35f)) && flag)
         {
             if (_StepSoundController.isPlaying || !flag) return;
