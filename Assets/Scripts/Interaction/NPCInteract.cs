@@ -8,7 +8,7 @@ public class NPCInteract : MonoBehaviour
 {
     public bool isFailed  = false;
     public bool isSuccess = false;
-    public int currentStage  = 1;
+    public static int currentStage  = 1;
     int currentPhrase = 0;
     int startRepeatIndex;
     int endRepeatIndex;

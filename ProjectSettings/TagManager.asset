@@ -8,6 +8,7 @@ TagManager:
   - QuestItem
   - Laser
   - GridController
+  - NPC
   layers:
   - Default
   - TransparentFX
