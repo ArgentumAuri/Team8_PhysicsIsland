@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 2380348826016738103}
   - component: {fileID: 160735362718540701}
   - component: {fileID: -8637122808124517791}
+  - component: {fileID: 4135123019812655431}
   m_Layer: 6
   m_Name: Potentiometr (1) 1
   m_TagString: QuestItem
@@ -117,7 +118,7 @@ Transform:
   - {fileID: 655924102009690474}
   - {fileID: 4353367578048014167}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2380348826016738103
 MonoBehaviour:
@@ -144,14 +145,14 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.4846344, y: 0.9212189, z: 1}
-  m_Center: {x: -0.2423172, y: 0.42952728, z: 0}
+  m_Size: {x: 1.6034393, y: 0.98631287, z: 1.0107422}
+  m_Center: {x: -0.052375793, y: 0.120262146, z: -0.14346313}
 --- !u!54 &-8637122808124517791
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -179,6 +180,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4135123019812655431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837611334881413779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82635912a40483d4bbef603832ec190e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4556793896594072061
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,7 +218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4556793896594072061}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.08642578, y: 0.331, z: 0}
+  m_LocalPosition: {x: 0.292, y: 0.123, z: -0.142}
   m_LocalScale: {x: 100, y: 99.999985, z: 99.999985}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -289,7 +302,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5571553797953069421}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.08642578, y: 0.33674622, z: 0}
+  m_LocalPosition: {x: 0.165, y: 0.125, z: -0.142}
   m_LocalScale: {x: 68.21239, y: 68.212364, z: 68.212364}
   m_ConstrainProportionsScale: 0
   m_Children:

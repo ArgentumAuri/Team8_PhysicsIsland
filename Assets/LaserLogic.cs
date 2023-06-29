@@ -15,6 +15,7 @@ public class LaserLogic : MonoBehaviour
     private int nPoints;
     private Vector3 inDirection;
     int itemsInGrid = 0;
+    public int partsCount;
     public bool ezz = false;
     
     // Start is called before the first frame update
@@ -26,7 +27,10 @@ public class LaserLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        las();   
+        if (partsCount == 3)
+        {
+            las();
+        }  
     }
 
     private void StartLaser()
@@ -79,7 +83,6 @@ public class LaserLogic : MonoBehaviour
 
 
                     //Print the name of the object the cast ray has hit, at the console  
-                    Debug.Log("Object name: " + hit.transform.gameObject.layer);
 
                     //if the number of reflections is set to 1  
                     if (nReflections == 1)
@@ -109,7 +112,6 @@ public class LaserLogic : MonoBehaviour
                         Debug.DrawRay(hit.point, inDirection * 100, Color.magenta);
 
                         //Print the name of the object the cast ray has hit, at the console  
-                        Debug.Log("Object name: " + hit.transform.name);
                         if (hit.transform.name == "OpenExit") ezz = true;
                     
                         //add a new vertex to the line renderer  

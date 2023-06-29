@@ -6,10 +6,11 @@ using UnityEngine;
 
 public class LaserItemPlaceholder : MonoBehaviour, IStaticItem
 {
+    private LaserLogic LLGIC;
     // Start is called before the first frame update
     void Start()
     {
-        
+        LLGIC = GameObject.FindGameObjectWithTag("Laser").GetComponent<LaserLogic>();
     }
 
     // Update is called once per frame
@@ -25,10 +26,8 @@ public class LaserItemPlaceholder : MonoBehaviour, IStaticItem
             itemInHand.SetParent(transform);
             itemInHand.localPosition = Vector3.zero;
             itemInHand.localRotation = Quaternion.identity;
-            itemInHand.GetComponent<ItemInteract>().enabled = false;
-            if (itemInHand.name == "fuse") itemInHand.localScale = new Vector3(2, 0.67f, 1);
-            if (itemInHand.name == "Potentiometr") itemInHand.localScale = Vector3.one;
-            if (itemInHand.name == "fuse") itemInHand.localScale = new Vector3(2, 0.67f, 1);
+            Destroy(itemInHand.GetComponent<ItemInteract>());
+            LLGIC.partsCount++;
         }
     }
 }

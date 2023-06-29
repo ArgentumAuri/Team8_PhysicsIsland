@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Highlight on look
+  - QuestItem
+  - Laser
+  - GridController
   layers:
   - Default
   - TransparentFX
