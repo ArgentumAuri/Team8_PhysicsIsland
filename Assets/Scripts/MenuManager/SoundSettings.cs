@@ -20,7 +20,7 @@ public class SoundSettings : MonoBehaviour
         TVtxt.text = ((int)toRange(min, max, TVslider.value, 0, 100)).ToString() + "%";
         PVtxt.text = ((int)toRange(min, max, PVslider.value, 0, 100)).ToString() + "%";
         EVtxt.text = ((int)toRange(min, max, EVslider.value, 0, 100)).ToString() + "%";
-        MVtxt.text = ((int)toRange(min, max, EVslider.value, 0, 100)).ToString() + "%";
+        MVtxt.text = ((int)toRange(min, max, MVslider.value, 0, 100)).ToString() + "%";
     }
     public void SetTotalVolume(float volume)
     {
