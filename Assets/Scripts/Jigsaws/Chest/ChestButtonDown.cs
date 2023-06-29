@@ -9,7 +9,7 @@ public class ChestButtonDown : MonoBehaviour, IStaticItem
     public bool IsAnimating;
     public Animator ChestAnimator;
     public GameObject npc;
-    public ItemInteract II;
+    public GameObject item;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +36,7 @@ public class ChestButtonDown : MonoBehaviour, IStaticItem
             {
                 ChestAnimator.Play("Chest Open");
                 npc.GetComponent<NPCInteract>().isSuccess = true;
+                item.SetActive(true);
                 gameObject.GetComponent<AudioSource>().Play();
                 
             }
