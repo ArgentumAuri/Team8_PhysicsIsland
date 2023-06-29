@@ -11,6 +11,26 @@ public class MenuMa : MonoBehaviour
     private void Start()
     {
         loading.SetActive(false);
+        if (!PlayerPrefs.HasKey("TotalVolume"))
+        {
+            PlayerPrefs.SetFloat("TotalVolume", 0);
+        }
+        if (!PlayerPrefs.HasKey("PlayerVolume"))
+        {
+            PlayerPrefs.SetFloat("PlayerVolume", 0);
+        }
+        if (!PlayerPrefs.HasKey("EnviromentVolume"))
+        {
+            PlayerPrefs.SetFloat("EnviromentVolume", 0);
+        }
+        if (!PlayerPrefs.HasKey("MusicVolume"))
+        {
+            PlayerPrefs.SetFloat("MusicVolume", 0);
+        }
+        if (!PlayerPrefs.HasKey("Sensetivity"))
+        {
+            PlayerPrefs.SetFloat("Sensetivity", 1);
+        }
     }
     public void StartGame()
     {
