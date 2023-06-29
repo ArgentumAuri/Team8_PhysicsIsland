@@ -16,7 +16,8 @@ public class LaserLogic : MonoBehaviour
     private Vector3 inDirection;
     int itemsInGrid = 0;
     public int partsCount;
-    public bool ezz = false;
+    public bool isDone = false;
+    public GameObject npc;
     
     // Start is called before the first frame update
     void Start()
@@ -101,23 +102,23 @@ public class LaserLogic : MonoBehaviour
                 if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))//cast the ray 100 units at the specified direction  
                 {
                     
-                        //the refletion direction is the reflection of the ray's direction at the hit normal  
-                        inDirection = Vector3.Reflect(inDirection, hit.normal);
-                        //cast the reflected ray, using the hit point as the origin and the reflected direction as the direction  
-                        ray = new Ray(hit.point, inDirection);
+                    //the refletion direction is the reflection of the ray's direction at the hit normal  
+                    inDirection = Vector3.Reflect(inDirection, hit.normal);
+                    //cast the reflected ray, using the hit point as the origin and the reflected direction as the direction  
+                    ray = new Ray(hit.point, inDirection);
 
-                        //Draw the normal - can only be seen at the Scene tab, for debugging purposes  
-                        Debug.DrawRay(hit.point, hit.normal * 3, Color.blue);
-                        //represent the ray using a line that can only be viewed at the scene tab  
-                        Debug.DrawRay(hit.point, inDirection * 100, Color.magenta);
+                    //Draw the normal - can only be seen at the Scene tab, for debugging purposes  
+                    Debug.DrawRay(hit.point, hit.normal * 3, Color.blue);
+                    //represent the ray using a line that can only be viewed at the scene tab  
+                    Debug.DrawRay(hit.point, inDirection * 100, Color.magenta);
 
-                        //Print the name of the object the cast ray has hit, at the console  
-                        if (hit.transform.name == "OpenExit") ezz = true;
-                    
-                        //add a new vertex to the line renderer  
-                        lineRenderer.SetVertexCount(++nPoints);
-                        //set the position of the next vertex at the line renderer to be the same as the hit point  
-                        lineRenderer.SetPosition(i + 1, hit.point);
+                    //Print the name of the object the cast ray has hit, at the console  
+                    if (hit.transform.name == "OpenExit") isDone = true;
+                    npc.GetComponent<NPCInteract>().isSuccess = true;
+                    //add a new vertex to the line renderer  
+                    lineRenderer.SetVertexCount(++nPoints);
+                    //set the position of the next vertex at the line renderer to be the same as the hit point  
+                    lineRenderer.SetPosition(i + 1, hit.point);
                     
                     
                 }
