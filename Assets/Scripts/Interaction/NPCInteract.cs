@@ -6,53 +6,84 @@ using UnityEngine.UI;
 
 public class NPCInteract : MonoBehaviour
 {
-    public bool isFailed  = false;
     public bool isSuccess = false;
+    public bool IsReadyToMove = false;
+
     public static int currentStage  = 1;
-    int currentPhrase = 0;
-    int startRepeatIndex;
-    int endRepeatIndex;
-    int startStagePhrase;
-    int successPhraseIndex;
-    public AudioClip[] Clips;
-    public string[] Phrases;
+    
+    public string[] regularPhrases;
+    int startRegularPhraseIndex;
+    int endRegularPhraseIndex;
+    int regularIndex=0;
+
+    public string[] repeatPhrases;
+    int startRepeatPhraseIndex;
+    int endRepeatPhraseIndex;
+    int repeatIndex=0;
+
+    public string[] explanationPhrases;
+    int startExplanationPhraseIndex;
+    int endExplanationPhraseIndex;
+    int explanationIndex=0;
+
+    public AudioClip[] regularClips;
+    public AudioClip[] repeatClips;
+    public AudioClip[] explanationClips;
     public AudioSource audioSource;
     public GameObject dialogBox;
     public List<Transform> itemToSpawn;
     public GameObject playeritem;
+    public Transform[] positions;
+    Animator anim;
     Text text;
+
     private void Start()
     {
+        positions[0] = gameObject.transform;
         text = dialogBox.GetComponentInChildren<Text>();
+        anim = transform.GetComponent<Animator>();
     }
     public void Dialog()
     {
         CurrentStage();
         dialogBox.SetActive(true);
-        Debug.Log(playeritem.GetComponentInChildren<Transform>());
+        Debug.Log(repeatIndex+" "+repeatIndex + " " + explanationIndex);
         if(!isSuccess)
         {
-            if (currentPhrase >= endRepeatIndex)
+            if (regularIndex <= endRegularPhraseIndex)
             {
-                currentPhrase = startRepeatIndex;
+                if (regularIndex == 10)
+                    SpawnObjects();
+                Debug.Log(regularPhrases[regularIndex], regularClips[regularIndex]);
+                ShowMessage(regularPhrases[regularIndex], regularClips[regularIndex]);
+                regularIndex++;
             }
-            ShowMessage(currentPhrase);
-
-            if (currentPhrase == 17)
-                SpawnObjects();
-            if (currentPhrase == 20)
-                RespawnObjests();
+            else if (repeatIndex <= endRepeatPhraseIndex)
+            {
+                if (repeatIndex == 14)
+                    RespawnObjests();
+                ShowMessage(repeatPhrases[repeatIndex], repeatClips[repeatIndex]);
+                repeatIndex++;
+                if (repeatIndex > endRepeatPhraseIndex)
+                {
+                    repeatIndex = startRepeatPhraseIndex;
+                }
+            }
         }
-        else if (isSuccess && playeritem.transform.GetChild(0))
+        else if (isSuccess && !IsReadyToMove)
         {
-
-            TakeItem();
-            ShowMessage(successPhraseIndex);
-            currentStage++;
-            isSuccess = false;
-            return;
+            if (explanationIndex > endExplanationPhraseIndex)
+            {
+                currentStage++;
+                anim.Play("NPC explosion");
+                isSuccess = false;
+                return;
+            }
+            ShowMessage(explanationPhrases[explanationIndex], explanationClips[explanationIndex]);
+            explanationIndex++;
+            if(playeritem.transform.childCount>0 && playeritem.transform.GetChild(0)!=null)
+                TakeItem();
         }
-        currentPhrase++;
     }
 
     void SpawnObjects()
@@ -63,6 +94,15 @@ public class NPCInteract : MonoBehaviour
             item.GetComponent<Rigidbody>().isKinematic = false;
             item.SetParent(null);
             item.transform.localScale = Vector3.one;
+        }
+    }
+
+    private void Update()
+    {
+        if (IsReadyToMove) 
+        {
+            gameObject.transform.position = positions[currentStage - 1].position;
+            IsReadyToMove = false;
         }
     }
     void RespawnObjests()
@@ -84,13 +124,14 @@ public class NPCInteract : MonoBehaviour
         item.gameObject.SetActive(false);
         
     }
-    void ShowMessage(int index)
+    void ShowMessage(string phrase,AudioClip clip)
     {
-        gameObject.GetComponent<UIWriter>().typeText(text,Phrases[index]);
+        gameObject.GetComponent<UIWriter>().typeText(text, phrase);
         Debug.Log(text.gameObject);
-        if (Clips[index] != null)
+        if (clip != null)
         {
-            audioSource.clip = Clips[index];
+            audioSource.clip = clip;
+            anim.Play(clip.name);
             audioSource.Play();
         }
     }
@@ -100,50 +141,50 @@ public class NPCInteract : MonoBehaviour
         {
             case 1:
                 {
-                    successPhraseIndex = 11;
-                    startStagePhrase = 0;
-                    startRepeatIndex = 8;
-                    endRepeatIndex = 10;
-                }break;
+                    startRegularPhraseIndex     =0;
+                    endRegularPhraseIndex       =7;
+                    startRepeatPhraseIndex      =0;
+                    endRepeatPhraseIndex        =4;
+                    startExplanationPhraseIndex =0;
+                    endExplanationPhraseIndex   =3;
+}
+                break;
             case 2: 
                 {
-                    successPhraseIndex = 16;
-                    startStagePhrase = 12;
-                    startRepeatIndex = 13;
-                    endRepeatIndex = 15;
+                    startRegularPhraseIndex     =7;
+                    endRegularPhraseIndex       =6;
+                    startRepeatPhraseIndex      =5;
+                    endRepeatPhraseIndex        =7;
+                    startExplanationPhraseIndex =4;
+                    endExplanationPhraseIndex   =6;
                 }
                 break;
             case 3:
                 {
-                    successPhraseIndex = 21;
-                    startStagePhrase = 17;
-                    startRepeatIndex = 18;
-                    endRepeatIndex = 21;
+                    startRegularPhraseIndex     =9;
+                    endRegularPhraseIndex       =14;
+                    startRepeatPhraseIndex      =8;
+                    endRepeatPhraseIndex        =14;
+                    startExplanationPhraseIndex =7;
+                    endExplanationPhraseIndex   =8;
                 }
                 break;
             case 4:
                 {
-                    startStagePhrase = 0;
-                    startRepeatIndex = 0;
-                    endRepeatIndex = 0;
-                }
-                break;
-            case 5:
-                {
-                    startStagePhrase = 0;
-                    startRepeatIndex = 0;
-                    endRepeatIndex = 0;
-                }
-                break;
-            case 6:
-                {
-                    startStagePhrase = Phrases.Length-1;
-                    startRepeatIndex = Phrases.Length - 1;
-                    endRepeatIndex = Phrases.Length - 1;
+                    startRegularPhraseIndex     =0;
+                    endRegularPhraseIndex       =0;
+                    startRepeatPhraseIndex      =0;
+                    endRepeatPhraseIndex        =0;
+                    startExplanationPhraseIndex =0;
+                    endExplanationPhraseIndex   =0;
                 }
                 break;
         }
-        if (currentPhrase < startStagePhrase)
-            currentPhrase = startStagePhrase;
+        if (regularIndex < startRegularPhraseIndex)
+            regularIndex = startRegularPhraseIndex;
+        if(repeatIndex< startRepeatPhraseIndex) 
+            repeatIndex = startRepeatPhraseIndex;
+        if(explanationIndex< startExplanationPhraseIndex) 
+            explanationIndex= startExplanationPhraseIndex;
     }
 }
