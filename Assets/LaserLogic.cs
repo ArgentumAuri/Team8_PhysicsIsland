@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,6 +19,10 @@ public class LaserLogic : MonoBehaviour
     public int partsCount;
     public bool isDone = false;
     public GameObject npc;
+    public TextMeshPro exitPercents;
+    public float exitProgress = 0;
+    public Light ExitLight;
+    public Animator ExitAnim;
     
     // Start is called before the first frame update
     void Start()
@@ -113,7 +118,16 @@ public class LaserLogic : MonoBehaviour
                     Debug.DrawRay(hit.point, inDirection * 100, Color.magenta);
 
                     //Print the name of the object the cast ray has hit, at the console  
-                    if (hit.transform.name == "OpenExit") isDone = true;
+                    if (hit.transform.name == "OpenExit" && lineRenderer.startWidth > 0.65 && lineRenderer.endWidth > 0.78)
+                    {
+                        exitProgress += 7.5f * Time.fixedDeltaTime;
+                        exitPercents.text = Mathf.Ceil(Mathf.Clamp(exitProgress, 0, 100)).ToString() + "%";
+                    }
+                    if (exitProgress > 100)
+                    {
+                        ExitLight.enabled = true;
+                        ExitAnim.Play("DoorOpen");
+                    }
                     npc.GetComponent<NPCInteract>().isSuccess = true;
                     //add a new vertex to the line renderer  
                     lineRenderer.SetVertexCount(++nPoints);
