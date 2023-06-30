@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
@@ -70,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (collision.tag == "Exit")
         {
-            Destroy(gameObject);
+            SceneManager.LoadScene(2);
         }
     }
 
