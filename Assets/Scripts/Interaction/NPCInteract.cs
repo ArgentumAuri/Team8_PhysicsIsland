@@ -10,6 +10,7 @@ public class NPCInteract : MonoBehaviour
     public bool IsReadyToMove = false;
 
     public static int currentStage  = 1;
+    public bool AnimatingNow = false;
     
     public string[] regularPhrases;
     int startRegularPhraseIndex;
@@ -45,6 +46,7 @@ public class NPCInteract : MonoBehaviour
     }
     public void Dialog()
     {
+        if (AnimatingNow) return;
         CurrentStage();
         dialogBox.SetActive(true);
         Debug.Log(repeatIndex+" "+repeatIndex + " " + explanationIndex);
@@ -72,13 +74,6 @@ public class NPCInteract : MonoBehaviour
         }
         else if (isSuccess && !IsReadyToMove)
         {
-            if (explanationIndex > endExplanationPhraseIndex)
-            {
-                currentStage++;
-                anim.Play("NPC explosion");
-                isSuccess = false;
-                return;
-            }
             ShowMessage(explanationPhrases[explanationIndex], explanationClips[explanationIndex]);
             explanationIndex++;
             if(playeritem.transform.childCount>0 && playeritem.transform.GetChild(0)!=null)
@@ -131,9 +126,17 @@ public class NPCInteract : MonoBehaviour
         if (clip != null)
         {
             audioSource.clip = clip;
-            anim.Play(clip.name);
+
+            if (clip.name == "NPC explosion")
+            {
+                currentStage++;
+                isSuccess = false;
+            }
+            anim.Play(clip.name);    
             audioSource.Play();
+            
         }
+        
     }
     void CurrentStage()
     {

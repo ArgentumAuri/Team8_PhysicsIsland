@@ -9,6 +9,7 @@ TagManager:
   - Laser
   - GridController
   - NPC
+  - Exit
   layers:
   - Default
   - TransparentFX

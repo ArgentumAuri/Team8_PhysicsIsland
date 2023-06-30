@@ -67,6 +67,11 @@ public class PlayerMovement : MonoBehaviour
     {
         Debug.Log(collision.gameObject.layer);
         _StepSoundController.clip = StoneStep;
+
+        if (collision.tag == "Exit")
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerExit(Collider collision)
