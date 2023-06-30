@@ -125,10 +125,11 @@ public class LaserLogic : MonoBehaviour
                     }
                     if (exitProgress > 100)
                     {
+                        npc.GetComponent<NPCInteract>().isSuccess = true;
                         ExitLight.enabled = true;
                         ExitAnim.Play("DoorOpen");
                     }
-                    npc.GetComponent<NPCInteract>().isSuccess = true;
+                    
                     //add a new vertex to the line renderer  
                     lineRenderer.SetVertexCount(++nPoints);
                     //set the position of the next vertex at the line renderer to be the same as the hit point  

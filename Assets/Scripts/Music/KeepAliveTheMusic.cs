@@ -24,8 +24,4 @@ public class KeepAliveTheMusic : MonoBehaviour
     {
         return clips[Random.Range(0, clips.Length)];
     }
-    void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);
-    }
 }

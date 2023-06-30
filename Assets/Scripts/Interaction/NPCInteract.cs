@@ -56,7 +56,7 @@ public class NPCInteract : MonoBehaviour
             {
                 if (regularIndex == 10)
                     SpawnObjects();
-                Debug.Log(regularPhrases[regularIndex], regularClips[regularIndex]);
+                //Debug.Log(regularPhrases[regularIndex], regularClips[regularIndex]);
                 ShowMessage(regularPhrases[regularIndex], regularClips[regularIndex]);
                 regularIndex++;
             }
@@ -174,11 +174,12 @@ public class NPCInteract : MonoBehaviour
                 break;
             case 4:
                 {
-                    startRegularPhraseIndex     =0;
+                    isSuccess = false;
+                    startRegularPhraseIndex     =16;
                     endRegularPhraseIndex       =0;
-                    startRepeatPhraseIndex      =0;
-                    endRepeatPhraseIndex        =0;
-                    startExplanationPhraseIndex =0;
+                    startRepeatPhraseIndex      =15;
+                    endRepeatPhraseIndex        =15;
+                    startExplanationPhraseIndex =100;
                     endExplanationPhraseIndex   =0;
                 }
                 break;
